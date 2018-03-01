@@ -11,12 +11,20 @@ with open('spi_matches.csv','r') as csvfile:
         match = reader_list[index]
         if match[11] is not None and match[12] is not None:
             try:
-            projected_one_win = float(match[6]) > float(match[7])
-            actual_two_win = float(match[12]) > float(match[11])
-            actual_tie = float(match[12]) == float(match[11])
-            if projected_one_win:
-                if actual_two_win or actual_tie:
-                    count_of_wrong += 1
+                projected_one_win = float(match[6]) > float(match[7])
+                projected_two_win = float(match[7]) > float(match[6])
+                actual_one_win = float(match[11]) > float(match[12])
+                actual_two_win = float(match[12]) > float(match[11])
+                actual_tie = float(match[12]) == float(match[11])
+                if projected_one_win:
+                    if actual_two_win or actual_tie:
+                        count_of_wrong += 1
+                if projected_two_win:
+                    if actual_one_win or actual_tie:
+                        count_of_wrong += 1
+            except ValueError:
+                continue
 
 percent_wrong = count_of_wrong/num_matches
-print (percent_wrong)
+accuracy = (1 - percent_wrong)*100
+print ("These match predictions are " + str("%.2f" % accuracy) + "% accurate for " + str(num_matches) + " matches.")
