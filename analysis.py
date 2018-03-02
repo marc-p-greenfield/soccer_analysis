@@ -32,7 +32,7 @@ def check_accuracy():
 
 #Function to determine teams that upset the most
 def find_underdogs():
-    underdog_list = {}
+    underdog_dict = {}
     count = 0
     with open('spi_matches.csv','r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
@@ -49,25 +49,25 @@ def find_underdogs():
                     actual_tie = float(match[12]) == float(match[11])
                     if projected_one_win:
                         if actual_two_win:
-                            if not match[3] in underdog_list:
-                                underdog_list[match[3]] = 1
+                            if not match[3] in underdog_dict:
+                                underdog_dict[match[3]] = 1
                             else:
-                                underdog_list[match[3]] += 1
+                                underdog_dict[match[3]] += 1
                     if projected_two_win:
                         if actual_one_win:
-                            if not match[2] in underdog_list:
-                                underdog_list[match[2]] = 1
+                            if not match[2] in underdog_dict:
+                                underdog_dict[match[2]] = 1
                             else:
-                                underdog_list[match[2]] += 1
+                                underdog_dict[match[2]] += 1
                 except ValueError:
                     continue
-    sorted_list = sorted(underdog_list.items(), key=lambda x: x[1], reverse = True)
+    sorted_list = sorted(underdog_dict.items(), key=lambda x: x[1], reverse = True)
     print ("These are the top 3 teams that upset the most: ")
     for x in sorted_list:
             print (x[0], x[1])
             count += 1
             if count == 3:
                 break
-                
+
 check_accuracy()
 find_underdogs()
